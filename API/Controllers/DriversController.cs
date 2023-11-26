@@ -1,4 +1,5 @@
 ﻿using API.Dtos.Request;
+using API.Dtos.Response;
 using API.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +32,9 @@ namespace API.Controllers
         {
             var activeDrivers = drivers.Where(d => d.Status == 1).ToList();
 
-            return Ok(activeDrivers);
+            var allDrivers = _mapper.Map<IEnumerable<DriverDto>>(activeDrivers);
+
+            return Ok(allDrivers);
         }
 
         // create driver
@@ -70,7 +73,9 @@ namespace API.Controllers
 
             if (driver is null) return NotFound();
 
-            return Ok(driver);
+            var dto = _mapper.Map<DriverDto>(driver);
+
+            return Ok(dto);
         }
 
         // update driver
