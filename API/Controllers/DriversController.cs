@@ -1,4 +1,5 @@
-﻿using API.Models;
+﻿using API.Dtos.Request;
+using API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,10 +33,21 @@ namespace API.Controllers
 
         // create driver
         [HttpPost]
-        public IActionResult Create([FromBody] Driver driver)
+        public IActionResult Create([FromBody] CreateDriverDto createDto)
         {
             if (ModelState.IsValid)
             {
+                var driver = new Driver 
+                {
+                    Id = Guid.NewGuid(),
+                    Status = 1,
+                    DateAdded = DateTime.Now,
+                    FirstName = createDto.FirstName,
+                    LastName = createDto.LastName,
+                    DriverNumber = createDto.DriverNumber,
+                    Trophies = createDto.Trophies,
+                };
+
                 drivers.Add(driver);
                 return Created("", driver);
             }
