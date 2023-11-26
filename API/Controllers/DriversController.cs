@@ -1,5 +1,6 @@
 ﻿using API.Dtos.Request;
 using API.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,10 +17,12 @@ namespace API.Controllers
         };
 
         private readonly ILogger<DriversController> _logger;
+        private readonly IMapper _mapper;
 
-        public DriversController(ILogger<DriversController> logger)
+        public DriversController(ILogger<DriversController> logger, IMapper mapper)
         {
             _logger = logger;
+            _mapper = mapper;
         }
 
         // get all drivers
@@ -37,16 +40,18 @@ namespace API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var driver = new Driver 
-                {
-                    Id = Guid.NewGuid(),
-                    Status = 1,
-                    DateAdded = DateTime.Now,
-                    FirstName = createDto.FirstName,
-                    LastName = createDto.LastName,
-                    DriverNumber = createDto.DriverNumber,
-                    Trophies = createDto.Trophies,
-                };
+                //var driver = new Driver 
+                //{
+                //    Id = Guid.NewGuid(),
+                //    Status = 1,
+                //    DateAdded = DateTime.Now,
+                //    FirstName = createDto.FirstName,
+                //    LastName = createDto.LastName,
+                //    DriverNumber = createDto.DriverNumber,
+                //    Trophies = createDto.Trophies,
+                //};
+
+                var driver = _mapper.Map<Driver>(createDto);
 
                 drivers.Add(driver);
                 return Created("", driver);
